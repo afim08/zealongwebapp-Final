@@ -1,31 +1,35 @@
 {% extends "layout.html" %}
-<html >
-
-<head>
-  <meta charset="UTF-8">
-  <title>ML API</title>
-  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
-
-  
-</head>
-
-<body>
-    {% for num in [1,2,3,4,5] %}
-        <div>
-
-             <br>
-             <h1>{{ num }}</h1>
-
-            
-        </div>
-        
-    {% endfor %}
- 
- <div class="login">
-    <br>
- 
-	<h1>Boston House Price Prediction</h1>
+{% block content %}
+<div>
+    <h1 class="article-title">Production Scheduling </h1>
 </div>
+    <div class="content-section ">
+        
+        <br>
+            <form action="{{ url_for('schedule')}}" method="post">
+                <input class="form-group" type="text"  name="Tea1" placeholder="Enter Tea 1" required="required" /><br>
+                <input class="form-group" type="text"  name="Tea2" placeholder="Enter Tea 1" required="required" /><br>
+                <input class="form-group" type="text"  name="Tea3" placeholder="Enter Tea 1" required="required" /><br>
+               
+                  
+                <button type="submit" class="btn btn-primary btn-block btn-large">Schedule</button>
+            </form>   
+            
+            
+            <br>
+            <br>
+       
+       
+    </div>
+
+        <div>
+            {{schedule_text}}
+
+        </div>
+      
+
+
+
+     
+
+{% endblock content %}
