@@ -7,9 +7,12 @@
         
         <br>
             <form action="{{ url_for('schedule')}}" method="post">
-                <input class="form-group" type="text"  name="Tea1" placeholder="Enter Tea 1" required="required" /><br>
-                <input class="form-group" type="text"  name="Tea2" placeholder="Enter Tea 1" required="required" /><br>
-                <input class="form-group" type="text"  name="Tea3" placeholder="Enter Tea 1" required="required" /><br>
+                <input class="form-group" type="text"  name="Tea1" placeholder="Enter Tea 1" required="required" />
+                <input class="form-group" type="text"  name="Teacount1" placeholder="Quantity Tea 1" required="required" /><br>
+                <input class="form-group" type="text"  name="Tea2" placeholder="Enter Tea 1" required="required" />
+                <input class="form-group" type="text"  name="Teacount2" placeholder="Quantity Tea 2" required="required" /><br>
+                <input class="form-group" type="text"  name="Tea3" placeholder="Enter Tea 1" required="required" />
+                <input class="form-group" type="text"  name="Teacount3" placeholder="Quantity Tea 3" required="required" /><br>
                
                   
                 <button type="submit" class="btn btn-primary btn-block btn-large">Schedule</button>
@@ -21,6 +24,9 @@
        
        
     </div>
+
+  
+
 
         <div>
             {{schedule_text}}

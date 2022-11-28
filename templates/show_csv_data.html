@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block content %}
+
+
+  </head>
+  <body>
+    <h1>Tea in Demand</h1>
+    
+        <div class="content-section">
+            <h3>Total Number: {{ data_var2 }}</h3>
+        </div>
+ 
+        {% for i in range(data_var2) %}
+       
+        <h4> {{ data_var[i] }}     {{ data_var3[i]}} </h4>
+        {% endfor %}
+        
+    
+
+   
+    </body>
+</html>
+
+{% endblock content %}
