@@ -3,17 +3,23 @@
   {% block content %}
   
   <body>
-    <h1>Flask GET, POST tutorial</h1>
+    <h4>File Upload</h4>
     
- 
+ <div class="content-section">
+
     <form method="POST" enctype="multipart/form-data" action="/uploadFile">
-        <input type="file" id="myFile" name="uploaded-file" accept=".csv">
-        <input type="submit" value="Upload File">
-    </form>
+      <input class="btn text-white bg-secondary  w3-button btn-block w3-hover-black" type="file" id="myFile" name="uploaded-file" accept=".csv">
+      <br>
+      <input style = "margin-left: 250px"  class="btn btn-secondary w3-button  w3-hover-black" type="submit" value="Upload File">
+  </form>
   <br>
-  <p style="color:blue;">Choose csv file to upload</p>
+
+
+ </div>
+    
+  <p style="color:grey;">Choose csv file to upload</p>
   <form action="/data" target="_blank">
-        <input type="submit" value="Show CSV" />
+        <input class="btn btn-secondary w3-button  w3-hover-black"  type="submit" value="Show CSV" />
     </form>
   </body>
 </html>

@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% block content %}
+   <h1>Packaging</h1> 
+   <br>
+
+    <p class="text-secondary" > Tea needed could be uploaded in csv format over here. The uploaded tea may be found in the current tea in demand section.  </p>
+    
+   <a class="btn btn-secondary w3-button btn-block w3-hover-black" href="{{url_for('upload')}}">Upload Tea In Demand</a>
+   <br>
+
+   
+   <p class="text-secondary" > The uploaded Tea in demand may be viewed here.   </p>
+    
+   <a class="btn btn-secondary w3-button btn-block w3-hover-black" href="{{url_for('Data')}}">Check Current Tea in Demand</a>
+
+
+   <br>
+
+   <p class="text-secondary" > Schedule for the uploaded Tea in demand could be seen here.  </p>
+   <a class="btn btn-secondary w3-button btn-block w3-hover-black" href="{{url_for('schedule')}}">Check current Schedule</a>
+
+{% endblock content %}

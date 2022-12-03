@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block content %}
+<div>
+    <h1 class="article-title">Operations Chart</h1>
+
+    <div class="content-section ">
+        <p class="text-secondary" > Tea needed could be uploaded in csv format over here. The uploaded tea may be found in the current tea in demand section.  </p>
+    
+        <a class="btn btn-secondary w3-button btn-block w3-hover-black" href="{{url_for('upload')}}">Current Month </a>
+
+
+
+    </div>
+
+    
+        
+        </div>
+        {{ data_var8 |safe }}
+       
+       </body>
+       
+    </div>
+      
+
+
+
+     
+
+{% endblock content %}

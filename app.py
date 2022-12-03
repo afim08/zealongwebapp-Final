@@ -1,4 +1,4 @@
-from flask import Flask, request, app, jsonify, url_for, render_template, request, session 
+from flask import Flask, request, app, jsonify, url_for, render_template, request, session ,flash
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError 
 from flask_wtf.file import FileField, FileAllowed
 import pandas as pd 
@@ -34,6 +34,43 @@ df_show = pd.read_csv('Automate.csv')
 @app.route('/')
 def home():
     return render_template('home.html')
+
+@app.route('/operations')
+def operations():
+    return render_template('operations.html')
+
+
+@app.route('/add', methods=['POST'])
+def add():
+    import numpy as np
+    data= [x for x in request.form.values()]
+    d=np.array(data)
+    daily_operation = pd.read_csv('./static/uploads/dailyoperation.csv')
+    daily_operation.loc[len(daily_operation)] =d
+    daily_operation= daily_operation.sort_index(ascending=False)
+    
+
+
+    #daily_operation.insert(0,data)
+    
+    daily_operation.to_csv('./static/uploads/dailyoperation.csv', index=False)
+    flash('The operation has been added. ', 'success')
+    
+    
+    daily_operation_display = daily_operation.to_html(classes='table table-stripped')
+    return render_template('operations.html',data_var7= daily_operation_display)
+    
+@app.route('/operations_chart')
+def operationsChart():
+
+    
+    operations = pd.read_csv('./static/uploads/dailyoperation.csv')
+    
+    operations = operations.to_html(classes='table table-stripped')
+    return render_template('operationschart.html', data_var8 =operations)
+    
+    
+
 
 @app.route("/about")  
 def about():
@@ -78,7 +115,30 @@ def uploadFile():
         return render_template('upload2.html')
 
 
+@app.route("/packaging")  
+def packaging():
+    return render_template('packaging.html')
 
+@app.route("/ingredients")  
+def ingredients():
+
+    ginger = 20 
+    return render_template('ingredients.html', a = ginger)
+
+
+@app.route("/blends")  
+def blends():
+    pass
+
+@app.route("/origins")  
+def origins():
+    pass
+
+
+
+@app.route("/inventory")  
+def inventory():
+    return render_template('inventory.html')
 
 
 @app.route('/data',  methods=("POST", "GET"))
@@ -277,11 +337,15 @@ def schedule():
     
         
 
-        df1_display = df1_1.to_html(classes='table table-stripped')
+        df1_1display = df1_1.to_html(classes='table table-stripped')
+        df1_display = df2.to_html(classes='table table-stripped')
 
     
-        return render_template('schedule.html', data_var5=df1_display)
+        return render_template('schedule.html', data_var5=df1_1display, data_var6 = df1_display)
  
+
+
+
  
 if __name__ == '__main__':
     app.run(debug=True)
