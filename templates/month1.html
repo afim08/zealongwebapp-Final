@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div>
+
+    
+    <br>
+    <h1 class="article-title">Operations on {{ data_var11| safe }}</h1>
+    <br>
+    <a class="btn btn-secondary w3-button btn-block w3-hover-black" href="{{url_for('statistics')}}">Check Statistics</a>
+
+<br>
+
+   <p> {{weight_dict |safe}} </p> 
+   <p> {{weight_dict_monthly |safe}} </p> 
+    
+
+
+   <p> {{data_var9 |safe}} </p> 
+    
+
+
+
+
+{% endblock content %}

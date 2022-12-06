@@ -4,6 +4,7 @@ from flask_wtf.file import FileField, FileAllowed
 import pandas as pd 
 import pickle 
 import os
+import calendar
 from werkzeug.utils import secure_filename
 
 app=Flask(__name__, static_folder='static')
@@ -39,6 +40,87 @@ def home():
 def operations():
     return render_template('operations.html')
 
+@app.route('/statistics')
+def statistics():
+    d=session.get("month_name1")
+    
+    
+    return render_template('statistics.html', data_var12=d)
+
+
+@app.route('/month')
+def month():
+    
+
+    return render_template('month.html')
+
+@app.route('/month1', methods=['POST',"GET"])
+def month1():
+    import numpy as np
+    
+    data= [x for x in request.form.values()]
+    string1 = data[0]
+    global month_name
+    month= int( string1.split('-')[1])
+    month_name= calendar.month_name[month]
+    session["month_name1"]=month_name  # i am using the month name to display in statistics page, hence using session 
+    year = int(string1.split('-')[0])
+    df = pd.read_csv('./static/uploads/dailyoperation.csv')
+    df['DATE'] = pd.to_datetime(df['DATE']).dt.strftime('%d/%m/%Y')
+    df= df.sort_values(by='DATE', ascending=False)
+    global df_monthly
+    df_monthly= pd.read_csv('./static/uploads/monthly.csv')
+    #df_monthly =pd.DataFrame()
+
+
+
+    # sorting the dataframe according to year and month 
+    for i in range(len(df)):
+        
+        a=df.DATE[i]
+        year_on_list= int( a.split('/')[2])
+        month_on_list= int( a.split('/')[1])
+        
+        if year_on_list ==year:
+            if month_on_list==month:
+                add= df.loc[i]
+                df_monthly=df_monthly.append(add)
+        
+        df_monthly_html = df_monthly.to_html(classes='table table-stripped')
+        session["monthly"]=df_monthly_html
+    
+    #this is the total weight till date
+        weight_dict={}
+        # doing statistics
+        all_tea= ['Oolong','Green','Black','FI','Grey','CHM','ChinaGrey','LG','IB','GH','RG','CHCF','Jasmine','HuamiOolong','HuamiBlack','HuamiGreen','SA','Chai','ZBT','RG']
+        for name in all_tea:
+            total_weight=0
+            for i in range(len(df)):
+                if df.TEA[i]==name:
+                    total_weight = df["TOTAL WEIGHT CONSUMED"][i]+total_weight
+        
+            if total_weight !=0:
+                weight_dict[name]=total_weight
+
+    weight_dict_monthly={}
+    # doing statistics
+    all_tea= ['Oolong','Green','Black','FI','Grey','CHM','ChinaGrey','LG','IB','GH','RG','CHCF','Jasmine','HuamiOolong','HuamiBlack','HuamiGreen','SA','Chai','ZBT','RG']
+    for name in all_tea:
+    
+        total_weight_monthly=0
+        for i in range(len(df)):
+            if df_monthly.TEA[i]==name:
+                total_weight_monthly = df_monthly["TOTAL WEIGHT CONSUMED"][i]+total_weight_monthly
+
+        if total_weight_monthly !=0:
+            weight_dict_monthly[name]=total_weight_monthly
+        
+                 
+        
+    return render_template('month1.html', data_var9 = df_monthly_html,data_var11=month_name, weight_dict=weight_dict, weight_dict_monthly=weight_dict_monthly)
+
+
+    
 
 @app.route('/add', methods=['POST'])
 def add():
@@ -46,7 +128,7 @@ def add():
     data= [x for x in request.form.values()]
     d=np.array(data)
     daily_operation = pd.read_csv('./static/uploads/dailyoperation.csv')
-    daily_operation.loc[len(daily_operation)] =d
+    daily_operation.loc[len(daily_operation)+1] =d
     daily_operation= daily_operation.sort_index(ascending=False)
     
 
@@ -57,8 +139,8 @@ def add():
     flash('The operation has been added. ', 'success')
     
     
-    daily_operation_display = daily_operation.to_html(classes='table table-stripped')
-    return render_template('operations.html',data_var7= daily_operation_display)
+    #daily_operation_display = daily_operation.to_html(classes='table table-stripped')
+    return render_template('operations.html' )#data_var7= daily_operation_display)
     
 @app.route('/operations_chart')
 def operationsChart():
