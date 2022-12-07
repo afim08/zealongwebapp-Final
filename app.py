@@ -43,9 +43,11 @@ def operations():
 @app.route('/statistics')
 def statistics():
     d=session.get("month_name1")
+    w=session.get("monthly_weight")
+    c= session.get("monthly_count")
     
-    
-    return render_template('statistics.html', data_var12=d)
+
+    return render_template('statistics.html', data_var12=d, w=w , c=c)
 
 
 @app.route('/month')
@@ -102,22 +104,29 @@ def month1():
             if total_weight !=0:
                 weight_dict[name]=total_weight
 
+
+    #this is the weight of different teas in the selected month 
     weight_dict_monthly={}
+    count_dict_monthly ={}
     # doing statistics
     all_tea= ['Oolong','Green','Black','FI','Grey','CHM','ChinaGrey','LG','IB','GH','RG','CHCF','Jasmine','HuamiOolong','HuamiBlack','HuamiGreen','SA','Chai','ZBT','RG']
     for name in all_tea:
-    
+        a=df_monthly.index # this is done because df_monthly's index will not be in order
         total_weight_monthly=0
-        for i in range(len(df)):
+        total_count_monthly =0
+        for i in a:
             if df_monthly.TEA[i]==name:
                 total_weight_monthly = df_monthly["TOTAL WEIGHT CONSUMED"][i]+total_weight_monthly
+                total_count_monthly = df_monthly["QUANTITY"][i]+total_count_monthly
 
         if total_weight_monthly !=0:
             weight_dict_monthly[name]=total_weight_monthly
+            count_dict_monthly[name] =total_count_monthly
         
-                 
+    session["monthly_weight"]=weight_dict_monthly  
+    session["monthly_count"]=count_dict_monthly       
         
-    return render_template('month1.html', data_var9 = df_monthly_html,data_var11=month_name, weight_dict=weight_dict, weight_dict_monthly=weight_dict_monthly)
+    return render_template('month1.html', data_var9 = df_monthly_html,data_var11=month_name)
 
 
     

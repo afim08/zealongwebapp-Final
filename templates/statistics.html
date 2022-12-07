@@ -4,19 +4,46 @@
 
   </head>
   <body>
-    <h1>Statistics {{data_var12| safe}}</h1>
 
-    <br>
 
+    <div id = "boxes">
+        <h1>Month of  {{data_var12| safe}}</h1>
+        <br>
+          
+    </div>  
+    <div id = "leftbox1">
+        <h5> TEA </h5>
+    </div>    
+    <div id = "rightbox1">
+        <h5> TOTAL WEIGHT </h5>
+    </div>
     
+    {% for key, value in w.items() %}
+     <br>
+        <div id = "leftbox">
+            <h6> {{ key }} </h6>
+        </div>    
+        <div id = "rightbox">
+            <h6> {{ value }} Kg </h6>
+        </div>
+      <br> 
+    {% endfor %}
+    
+    
+                
 
-    {{ date |safe}}
-        
 
-      
-     
 
-    </body>
+
+
+
+
+
+
+
+
+  
+
 </html>
 
 {% endblock content %}

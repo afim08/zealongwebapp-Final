@@ -1,3 +1,61 @@
+  #leftbox {
+    float:left; 
+    background:#e6e6ff;
+    width:49%;
+    height:50px;
+    margin-bottom: 1px;
+    padding-left: 50px;
+    padding-top: 10px;
+  }
+  #leftbox1 {
+    float:left; 
+    background:white;
+    width:49%;
+    height:50px;
+    margin-bottom: 1px;
+    padding-left: 150px;
+    padding-top: 10px;
+  }
+  #middlebox{
+    float:left; 
+    background:whitesmoke;
+    width:30%;
+    height:50px;
+    margin-bottom: 1px;
+    padding-left: 50px;
+    padding-top: 10px;
+  }
+  #rightbox{
+    float:right;
+    background:#ccccff ;
+    width:49%;
+    height:50px;
+    margin-bottom: 1px;
+    padding-left: 50px;
+    padding-top: 10px;
+  }
+  #rightbox1{
+    float:right;
+    background:white ;
+    width:50%;
+    height:50px;
+    margin-bottom: 1px;
+    padding-left: 100px;
+    padding-top: 10px;
+  }
+  h1{
+    color:green;
+    text-align:center;
+
+  }
+
+
+
+
+
+
+
+
 body {
     background: #fafafa;
     color: #333333;
