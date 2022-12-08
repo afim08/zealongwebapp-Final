@@ -11,23 +11,37 @@
         <br>
           
     </div>  
-    <div id = "leftbox1">
-        <h5> TEA </h5>
-    </div>    
-    <div id = "rightbox1">
-        <h5> TOTAL WEIGHT </h5>
+    <div>
+        <div id="fullbox" style="overflow:auto; overflow-x:hidden;  height:300px;">
+
+            <h6> {{ w | safe}}</h6>
+        </div>
+        <br>
+        
+        <div id="rightbox">
+            <h6> Total Sachets {{ sachet_count| safe}}</h6>
+            
+        </div>
+
+
     </div>
     
-    {% for key, value in w.items() %}
-     <br>
-        <div id = "leftbox">
-            <h6> {{ key }} </h6>
-        </div>    
-        <div id = "rightbox">
-            <h6> {{ value }} Kg </h6>
-        </div>
-      <br> 
-    {% endfor %}
+        
+   
+
+   
+   <br>
+    
+    <div id="leftbox">
+        <img src='./static/uploads/output.png' width="370" height="300"/>
+
+    </div>
+    
+   <div id="rightbox">
+         <img src='./static/uploads/wgt.png' width="370" height="300"/>
+   </div>
+
+
     
     
                 

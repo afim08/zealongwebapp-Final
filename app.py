@@ -42,12 +42,38 @@ def operations():
 
 @app.route('/statistics')
 def statistics():
+    import seaborn as sns
+    try:
+        os.remove("./static/uploads/output.png") 
+        os.remove("./static/uploads/wgt.png") 
+    except:
+        pass
     d=session.get("month_name1")
-    w=session.get("monthly_weight")
-    c= session.get("monthly_count")
+    w=session.get("monthly_table")
+    dict1 =session.get("monthly_table_dict")
+    sachet_count =session.get("sachet_count")
+
+    #these 2 lines are added to avoid error as below
+    #"main thread is not in main loop"
+    import matplotlib.pyplot as plt
+    plt.switch_backend('agg')
+
+
+    monthly_table1 = pd.DataFrame(dict1)
+    sns_plot= sns.barplot(data=monthly_table1, x="Tea", y="Count")
+    fig = sns_plot.get_figure()
+    fig.savefig("./static/uploads/output.png")
+    #fig=sns_plot.get_figure().savefig("./static/uploads/output.png")
+
+    sns_plot= sns.barplot(data=monthly_table1, x="Tea", y="Weight")
+    fig = sns_plot.get_figure()
+    fig.savefig("./static/uploads/wgt.png")
+
+
+    # taking the sum of all the teabags
     
 
-    return render_template('statistics.html', data_var12=d, w=w , c=c)
+    return render_template('statistics.html', data_var12=d, w=w , dict1=dict1, sachet_count=sachet_count )
 
 
 @app.route('/month')
@@ -90,41 +116,71 @@ def month1():
         
         df_monthly_html = df_monthly.to_html(classes='table table-stripped')
         session["monthly"]=df_monthly_html
+
+    # taking the count of sachets 
+    sachet_count=0
+    a=df_monthly.index
+    for i in a:
+        num=34,986
+        if df_monthly["MACHINE"][i]=="FT-II":
+            sachet_count=float( df_monthly["QUANTITY"][i]+sachet_count)
+        else:
+            pass
+    session["sachet_count"] = sachet_count
+
+
     
     #this is the total weight till date
-        weight_dict={}
-        # doing statistics
-        all_tea= ['Oolong','Green','Black','FI','Grey','CHM','ChinaGrey','LG','IB','GH','RG','CHCF','Jasmine','HuamiOolong','HuamiBlack','HuamiGreen','SA','Chai','ZBT','RG']
-        for name in all_tea:
-            total_weight=0
-            for i in range(len(df)):
-                if df.TEA[i]==name:
-                    total_weight = df["TOTAL WEIGHT CONSUMED"][i]+total_weight
-        
-            if total_weight !=0:
-                weight_dict[name]=total_weight
-
-
-    #this is the weight of different teas in the selected month 
-    weight_dict_monthly={}
-    count_dict_monthly ={}
+    weight_dict={}
     # doing statistics
     all_tea= ['Oolong','Green','Black','FI','Grey','CHM','ChinaGrey','LG','IB','GH','RG','CHCF','Jasmine','HuamiOolong','HuamiBlack','HuamiGreen','SA','Chai','ZBT','RG']
     for name in all_tea:
-        a=df_monthly.index # this is done because df_monthly's index will not be in order
-        total_weight_monthly=0
-        total_count_monthly =0
-        for i in a:
-            if df_monthly.TEA[i]==name:
-                total_weight_monthly = df_monthly["TOTAL WEIGHT CONSUMED"][i]+total_weight_monthly
-                total_count_monthly = df_monthly["QUANTITY"][i]+total_count_monthly
+        total_weight=0
+        for i in range(len(df)):
+            if df.TEA[i]==name:
+                total_weight = df["TOTAL WEIGHT CONSUMED"][i]+total_weight
+    
+        if total_weight !=0:
+            weight_dict[name]=total_weight
 
-        if total_weight_monthly !=0:
-            weight_dict_monthly[name]=total_weight_monthly
-            count_dict_monthly[name] =total_count_monthly
-        
-    session["monthly_weight"]=weight_dict_monthly  
-    session["monthly_count"]=count_dict_monthly       
+
+   #this is the total weight for a month
+    weight_dict_monthly={}
+    # doing statistics
+    all_tea= ['Oolong','Green','Black','FI','Grey','CHM','ChinaGrey','LG','IB','GH','RG','CHCF','Jasmine','HuamiOolong','HuamiBlack','HuamiGreen','SA','Chai','ZBT','RG']
+    lst_name=[]
+    lst_weight=[]
+    lst_count=[]
+    for name in all_tea:
+            a=df_monthly.index
+            
+            total_weight_monthly=0
+            total_count_monthly =0
+            complete_total_count=0
+            for i in a:
+                if df_monthly.TEA[i]==name:
+                    total_weight_monthly = float(df_monthly["TOTAL WEIGHT CONSUMED"][i]+total_weight_monthly)
+                    if df_monthly["MACHINE"][i] !="FT-II":
+                        total_count_monthly = df_monthly["QUANTITY"][i]+total_count_monthly
+                else:
+                    pass
+            if total_weight_monthly !=0:
+                lst_name.append(name)
+                lst_weight.append(total_weight_monthly)
+                lst_count.append(total_count_monthly)    
+            
+                
+            if total_weight_monthly !=0:
+                
+                
+                weight_dict_monthly['Tea']=lst_name
+                weight_dict_monthly['Weight']=lst_weight
+                weight_dict_monthly['Count']=lst_count  
+
+    monthly_table = pd.DataFrame(weight_dict_monthly)
+    monthly_table_display = monthly_table.to_html(classes='table table-stripped')
+    session["monthly_table"]=monthly_table_display
+    session["monthly_table_dict"]=weight_dict_monthly
         
     return render_template('month1.html', data_var9 = df_monthly_html,data_var11=month_name)
 

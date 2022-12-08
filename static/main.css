@@ -1,16 +1,30 @@
-  #leftbox {
-    float:left; 
-    background:#e6e6ff;
-    width:49%;
-    height:50px;
-    margin-bottom: 1px;
-    padding-left: 50px;
-    padding-top: 10px;
-  }
+#fullbox {
+  
+  background:whitesmoke ;
+  width:100%;
+  height:100px;
+  margin-bottom: 1px;
+  margin-top: 2px;
+  padding-left: 10px;
+  
+  padding-bottom: 10px;
+}
+
+#leftbox {
+  float:left; 
+  background:#e6e6ff;
+  width:45%;
+  height:30px;
+  
+  padding-left: 0px;
+  padding-top: 1px;
+}
+ 
+
   #leftbox1 {
     float:left; 
     background:white;
-    width:49%;
+    width:33%;
     height:50px;
     margin-bottom: 1px;
     padding-left: 150px;
@@ -19,27 +33,38 @@
   #middlebox{
     float:left; 
     background:whitesmoke;
-    width:30%;
+    width:20%;
+    height:30px;
+    
+    padding-left: 100px;
+    padding-top: 130px;
+  }
+
+  #middlebox1{
+    float:left; 
+    background:whitesmoke;
+    width:1%;
     height:50px;
     margin-bottom: 1px;
-    padding-left: 50px;
+    text-align: centre;
+    padding-left: 1150px;
     padding-top: 10px;
   }
   #rightbox{
     float:right;
     background:#ccccff ;
-    width:49%;
-    height:50px;
-    margin-bottom: 1px;
-    padding-left: 50px;
-    padding-top: 10px;
+    width:45%;
+    height:30px;
+    
+    padding-left: 0px;
+    padding-top: 1px;
   }
   #rightbox1{
-    float:right;
+    float: right;
     background:white ;
-    width:50%;
+    width:24%;
     height:50px;
-    margin-bottom: 1px;
+   
     padding-left: 100px;
     padding-top: 10px;
   }
