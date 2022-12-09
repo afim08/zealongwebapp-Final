@@ -23,7 +23,8 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = 'This is your secret key to utilize session in Flask'
 
 
-
+global overall_dict
+overall_dict={}
 
 
 
@@ -40,6 +41,15 @@ def home():
 def operations():
     return render_template('operations.html')
 
+
+@app.route('/overallstatistics')
+def overallstatistics():
+    pass
+
+
+
+
+
 @app.route('/statistics')
 def statistics():
     import seaborn as sns
@@ -50,6 +60,7 @@ def statistics():
         pass
     d=session.get("month_name1")
     w=session.get("monthly_table")
+    y=session.get("year")
     dict1 =session.get("monthly_table_dict")
     sachet_count =session.get("sachet_count")
 
@@ -60,7 +71,7 @@ def statistics():
 
 
     monthly_table1 = pd.DataFrame(dict1)
-    sns_plot= sns.barplot(data=monthly_table1, x="Tea", y="Count")
+    sns_plot= sns.barplot(data=monthly_table1, x="Tea", y="Count",  palette = "Blues")
     fig = sns_plot.get_figure()
     fig.savefig("./static/uploads/output.png")
     #fig=sns_plot.get_figure().savefig("./static/uploads/output.png")
@@ -71,9 +82,42 @@ def statistics():
 
 
     # taking the sum of all the teabags
+    tbs_total = monthly_table1['Count'].sum()
+
+    total_units = sachet_count + tbs_total
+
+
+
+    
+    c= d+' ' +str(y)
+    lst= [ c, y, d, tbs_total, sachet_count, total_units]
+    overall_dict[c]= lst
+    overall= pd.DataFrame(overall_dict)
+
+    df_tbs=pd.DataFrame((overall.loc[3]))
+    plot_tbs=sns.barplot(data=df_tbs, x=df_tbs.index, y=3, palette = "Greens")
+    fig_tbs = plot_tbs.get_figure()
+    fig_tbs.savefig("./static/uploads/tbs.png")
+
+    df_sachet=pd.DataFrame((overall.loc[4]))
+    plot_sachet=sns.barplot(data=df_sachet, x=df_tbs.index, y=4,  palette = "Blues")
+    fig_sachet = plot_sachet.get_figure()
+    fig_sachet.savefig("./static/uploads/sachet.png")
     
 
-    return render_template('statistics.html', data_var12=d, w=w , dict1=dict1, sachet_count=sachet_count )
+    df_units=pd.DataFrame((overall.loc[5]))
+    plot_units=sns.barplot(data=df_units, x=df_tbs.index, y=5,  palette = "Reds")
+    fig_units = plot_units.get_figure()
+    fig_units.savefig("./static/uploads/units.png")
+    
+    overall_html = overall.to_html(classes='table table-stripped')
+   
+
+
+
+    
+
+    return render_template('statistics.html', data_var12=d, w=w , dict1=dict1, sachet_count=sachet_count , tbs_total=tbs_total, total_units=total_units, overall_dict=overall_html)
 
 
 @app.route('/month')
@@ -93,6 +137,7 @@ def month1():
     month_name= calendar.month_name[month]
     session["month_name1"]=month_name  # i am using the month name to display in statistics page, hence using session 
     year = int(string1.split('-')[0])
+    session["year"]=year
     df = pd.read_csv('./static/uploads/dailyoperation.csv')
     df['DATE'] = pd.to_datetime(df['DATE']).dt.strftime('%d/%m/%Y')
     df= df.sort_values(by='DATE', ascending=False)

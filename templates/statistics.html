@@ -10,24 +10,36 @@
         <h1>Month of  {{data_var12| safe}}</h1>
         <br>
           
-    </div>  
+    </div> 
+    <br>
+    <div id="leftbox1">
+        <h6> Total Teabags </h6>
+        <h6> {{ tbs_total | safe}}</h6>
+    </div>
+    <div id="leftbox2">
+        <h6> Total Sachets </h6>
+        <h6> {{ sachet_count | safe}}</h6>
+    </div>
+
+    <div id="leftbox2">
+        <h6> Total Units </h6>
+        <h6> {{ total_units | safe}}</h6>
+    </div>
+
+    <br>
+
+
     <div>
         <div id="fullbox" style="overflow:auto; overflow-x:hidden;  height:300px;">
 
             <h6> {{ w | safe}}</h6>
         </div>
         <br>
-        
-        <div id="rightbox">
-            <h6> Total Sachets {{ sachet_count| safe}}</h6>
-            
-        </div>
-
 
     </div>
     
         
-   
+    
 
    
    <br>
@@ -40,6 +52,34 @@
    <div id="rightbox">
          <img src='./static/uploads/wgt.png' width="370" height="300"/>
    </div>
+  
+
+   <div id="middlebox">
+        <h6> Total Teabags in different months</h6>
+        <img src='./static/uploads/tbs.png' width="370" height="300"/>
+
+   </div>
+
+   <br>
+
+   <div id="middlebox">
+        <h6> Total Sachets in different months</h6>
+        <img src='./static/uploads/sachet.png' width="370" height="300"/>
+
+    </div>
+
+    <br>
+
+    <div id="middlebox">
+        <h6> Total Units in different months</h6>
+        <img src='./static/uploads/units.png' width="370" height="300"/>
+
+    </div>
+
+
+   
+
+ 
 
 
     
