@@ -69,6 +69,12 @@ def statistics():
     import matplotlib.pyplot as plt
     plt.switch_backend('agg')
 
+    monthly_table1 = pd.DataFrame(dict1)
+    sns_plot1= sns.barplot(data=monthly_table1, x="Tea", y="Weight",  palette = "Purples")
+    fig1 = sns_plot1.get_figure()
+    fig1.savefig("./static/uploads/wgt.png")
+
+
 
     monthly_table1 = pd.DataFrame(dict1)
     sns_plot= sns.barplot(data=monthly_table1, x="Tea", y="Count",  palette = "Blues")
@@ -76,9 +82,7 @@ def statistics():
     fig.savefig("./static/uploads/output.png")
     #fig=sns_plot.get_figure().savefig("./static/uploads/output.png")
 
-    sns_plot= sns.barplot(data=monthly_table1, x="Tea", y="Weight")
-    fig = sns_plot.get_figure()
-    fig.savefig("./static/uploads/wgt.png")
+
 
 
     # taking the sum of all the teabags
@@ -94,21 +98,27 @@ def statistics():
     overall_dict[c]= lst
     overall= pd.DataFrame(overall_dict)
 
+
+    df_sachet=pd.DataFrame((overall.loc[4]))
+    plot_sachet=sns.barplot(data=df_sachet, x=df_sachet.index, y=4,  palette = "Blues")
+    fig_sachet = plot_sachet.get_figure()
+    fig_sachet.savefig("./static/uploads/sachet.png")
+
     df_tbs=pd.DataFrame((overall.loc[3]))
-    plot_tbs=sns.barplot(data=df_tbs, x=df_tbs.index, y=3, palette = "Greens")
+    plot_tbs=sns.barplot(data=df_tbs, x=df_tbs.index, y=3, palette = "Greys")
     fig_tbs = plot_tbs.get_figure()
     fig_tbs.savefig("./static/uploads/tbs.png")
 
-    df_sachet=pd.DataFrame((overall.loc[4]))
-    plot_sachet=sns.barplot(data=df_sachet, x=df_tbs.index, y=4,  palette = "Blues")
-    fig_sachet = plot_sachet.get_figure()
-    fig_sachet.savefig("./static/uploads/sachet.png")
+    
     
 
     df_units=pd.DataFrame((overall.loc[5]))
     plot_units=sns.barplot(data=df_units, x=df_tbs.index, y=5,  palette = "Reds")
     fig_units = plot_units.get_figure()
     fig_units.savefig("./static/uploads/units.png")
+
+
+    
     
     overall_html = overall.to_html(classes='table table-stripped')
    
