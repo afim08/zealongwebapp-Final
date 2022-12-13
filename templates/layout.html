@@ -14,9 +14,9 @@
 
 
     {% if title %}
-        <title>Flask Blog - {{title}}</title>
+        <title>Zealong Factory {{title}}</title>
     {% else %}
-        <title>Flask Blog</title>
+        <title>Zealong Factory</title>
     {% endif %}
 
 </head>
@@ -34,6 +34,7 @@
                 <a class="nav-item nav-link" href="{{url_for('packaging')}}">Packaging</a>
                 <a class="nav-item nav-link" href="{{url_for('inventory')}}">Inventory</a>
                 <a class="nav-item nav-link" href="{{url_for('operations')}}">Daily Operations</a>
+                <a class="nav-item nav-link" href="{{url_for('overallstats')}}">Statistics</a>
                 
                 
 

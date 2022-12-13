@@ -6,6 +6,8 @@ import pickle
 import os
 import calendar
 from werkzeug.utils import secure_filename
+import matplotlib.pyplot as plt
+import numpy as np
 
 app=Flask(__name__, static_folder='static')
 # Define folder to save uploaded files to process further
@@ -26,6 +28,8 @@ app.secret_key = 'This is your secret key to utilize session in Flask'
 global overall_dict
 overall_dict={}
 
+#
+df_barchart = pd.DataFrame({ 'Month': [],'Tbs': [],'Sachets': [], 'Total':[]})
 
 
 
@@ -43,8 +47,10 @@ def operations():
 
 
 @app.route('/overallstatistics')
-def overallstatistics():
-    pass
+def overallstats():
+    df = pd.read_csv('./static/uploads/dailyoperation.csv')
+    
+    return render_template('overallstats.html')
 
 
 
@@ -96,29 +102,88 @@ def statistics():
     c= d+' ' +str(y)
     lst= [ c, y, d, tbs_total, sachet_count, total_units]
     overall_dict[c]= lst
+
+    lst_bar= [c,tbs_total, sachet_count, total_units]
+
+    ########################################################################
+    mnths=[]
+    if len(df_barchart)==0:
+        df_barchart.loc[0]=lst_bar
+    else:
+        for i in range(len(df_barchart)):
+            mnths.append(df_barchart.loc[i][0])
+        if c in mnths:
+            a=mnths.index(c)
+            df_barchart.loc[a]=lst_bar
+        else:
+            df_barchart.loc[len(df_barchart)]=lst_bar
+    
+    df1= df_barchart
+    X = df1.Month
+    tbs = df1.Tbs
+    sachets = df1.Sachets
+    units=df1.Total
+    
+    
+    X_axis = np.arange(len(X))  
+    
+    
+    plt.bar(X_axis - 0.08, tbs, 0.1, label = 'Teabags')
+    plt.bar(X_axis + 0.01, sachets, 0.1, label = 'Sachets')
+    plt.bar(X_axis + 0.1, units, 0.1, label = 'Total')
+    
+    
+    plt.xticks(X_axis, X,fontsize=6)
+    plt.xlabel("Months" )
+    plt.ylabel("Number")
+    plt.title("Monthly Comparison")
+    plt.legend()
+    plt.savefig("./static/uploads/multiple.png")
+
+
+    ################################################################
+
+
+
+
+
     overall= pd.DataFrame(overall_dict)
 
 
-    df_sachet=pd.DataFrame((overall.loc[4]))
-    plot_sachet=sns.barplot(data=df_sachet, x=df_sachet.index, y=4,  palette = "Blues")
-    fig_sachet = plot_sachet.get_figure()
-    fig_sachet.savefig("./static/uploads/sachet.png")
+    #df_sachet=pd.DataFrame((overall.loc[4]))
+    #plot_sachet=sns.barplot(data=df_sachet, x=df_sachet.index, y=4,  palette = "Blues")
+    #fig_sachet = plot_sachet.get_figure()
+    #fig_sachet.savefig("./static/uploads/sachet.png")
 
-    df_tbs=pd.DataFrame((overall.loc[3]))
-    plot_tbs=sns.barplot(data=df_tbs, x=df_tbs.index, y=3, palette = "Greys")
-    fig_tbs = plot_tbs.get_figure()
-    fig_tbs.savefig("./static/uploads/tbs.png")
-
-    
-    
-
-    df_units=pd.DataFrame((overall.loc[5]))
-    plot_units=sns.barplot(data=df_units, x=df_tbs.index, y=5,  palette = "Reds")
-    fig_units = plot_units.get_figure()
-    fig_units.savefig("./static/uploads/units.png")
-
+    #df_tbs=pd.DataFrame((overall.loc[3]))
+    #plot_tbs=sns.barplot(data=df_tbs, x=df_tbs.index, y=3, palette = "Greys")
+    #fig_tbs = plot_tbs.get_figure()
+    #fig_tbs.savefig("./static/uploads/tbs.png")
 
     
+    
+
+    #df_units=pd.DataFrame((overall.loc[5]))
+    #plot_units=sns.barplot(data=df_units, x=df_tbs.index, y=5,  palette = "Reds")
+    #fig_units = plot_units.get_figure()
+    #fig_units.savefig("./static/uploads/units.png")
+
+
+    #all month stats in multiple bar chart 
+
+    
+
+
+    #multiple_bar=df_barchart.plot(x="Month", y=["Tbs", "Sachets",'Total'], kind="bar")
+    
+    
+   
+    #fig_bar = multiple_bar.get_figure()
+    
+    #fig_bar.savefig("./static/uploads/multiple.png", dpi=100)
+        
+
+    bar_html = df_barchart.to_html(classes='table table-stripped')
     
     overall_html = overall.to_html(classes='table table-stripped')
    
@@ -127,7 +192,7 @@ def statistics():
 
     
 
-    return render_template('statistics.html', data_var12=d, w=w , dict1=dict1, sachet_count=sachet_count , tbs_total=tbs_total, total_units=total_units, overall_dict=overall_html)
+    return render_template('statistics.html', data_var12=d, w=w , dict1=dict1, sachet_count=sachet_count , tbs_total=tbs_total, total_units=total_units, overall_dict=overall_html, bar_html=bar_html)
 
 
 @app.route('/month')
@@ -233,6 +298,7 @@ def month1():
                 weight_dict_monthly['Count']=lst_count  
 
     monthly_table = pd.DataFrame(weight_dict_monthly)
+    #monthly_table= monthly_table.sort_values(by='DATE',ascending=True,inplace=True)
     monthly_table_display = monthly_table.to_html(classes='table table-stripped')
     session["monthly_table"]=monthly_table_display
     session["monthly_table_dict"]=weight_dict_monthly
@@ -249,7 +315,8 @@ def add():
     d=np.array(data)
     daily_operation = pd.read_csv('./static/uploads/dailyoperation.csv')
     daily_operation.loc[len(daily_operation)+1] =d
-    daily_operation= daily_operation.sort_index(ascending=False)
+    #daily_operation= daily_operation.sort_index(ascending=False)
+    daily_operation= daily_operation.sort_values(by='DATE', ascending=False)
     
 
 
